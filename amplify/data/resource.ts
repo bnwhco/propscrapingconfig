@@ -1,57 +1,51 @@
-import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import { defineData, type ClientSchema } from '@aws-amplify/backend-data';
+import { a } from '@aws-amplify/data-schema';
 
-/*== STEP 1 ===============================================================
-The section below creates a Todo database table with a "content" field. Try
-adding a new "isDone" field as a boolean. The authorization rule below
-specifies that any user authenticated via an API key can "create", "read",
-"update", and "delete" any "Todo" records.
-=========================================================================*/
+/*
+Define the DomainConfig model.
+NOTE: Authorization is set to allow any authenticated user to manage configs.
+For production, consider restricting create/update/delete to an 'admin' group:
+.authorization(allow => [
+  allow.authenticated().to(['read']),
+  allow.group('admin').to(['create', 'update', 'delete'])
+])
+*/
 const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
-    })
-    .authorization((allow) => [allow.publicApiKey()]),
+  /**
+   * Stores the screen scraping configuration for a specific domain.
+   * This configuration is system-wide, not per-user.
+   */
+  DomainConfig: a.model({
+    /**
+     * The normalized domain name (e.g., "realestate.com.au").
+     * This acts as the primary identifier for the config.
+     * Using `@primaryKey` makes querying by domain efficient.
+     */
+    domain: a.string().required().identifier(), // Make domain the primary key
+
+    /**
+     * The mapping from scraped field names to desired field names.
+     * Stored as a flexible JSON object.
+     * Example: { "scraped_price": "askingPrice", "bedrooms_scraped": "numBedrooms" }
+     */
+    fieldMappings: a.json().required(),
+
+    // Timestamps (createdAt, updatedAt) are added automatically
+  })
+  // Allow any authenticated user to read, create, update, and delete configs.
+  // WARNING: This might be too permissive for system-wide configurations.
+  // Consider using group-based authorization ('admin') for CUD operations in production.
+  .authorization(allow => [allow.authenticated()])
 });
 
-export type Schema = ClientSchema<typeof schema>;
-
+// Export the schema definition for Amplify to process
 export const data = defineData({
   schema,
   authorizationModes: {
-    defaultAuthorizationMode: "apiKey",
-    // API Key is used for a.allow.public() rules
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
-    },
+    // Default authorization mode for the generated client
+    defaultAuthorizationMode: 'userPool', // Use Cognito User Pools for authenticated access
   },
 });
 
-/*== STEP 2 ===============================================================
-Go to your frontend source code. From your client-side code, generate a
-Data client to make CRUDL requests to your table. (THIS SNIPPET WILL ONLY
-WORK IN THE FRONTEND CODE FILE.)
-
-Using JavaScript or Next.js React Server Components, Middleware, Server 
-Actions or Pages Router? Review how to generate Data clients for those use
-cases: https://docs.amplify.aws/gen2/build-a-backend/data/connect-to-API/
-=========================================================================*/
-
-/*
-"use client"
-import { generateClient } from "aws-amplify/data";
-import type { Schema } from "@/amplify/data/resource";
-
-const client = generateClient<Schema>() // use this Data client for CRUDL requests
-*/
-
-/*== STEP 3 ===============================================================
-Fetch records from the database and use them in your frontend component.
-(THIS SNIPPET WILL ONLY WORK IN THE FRONTEND CODE FILE.)
-=========================================================================*/
-
-/* For example, in a React component, you can use this snippet in your
-  function's RETURN statement */
-// const { data: todos } = await client.models.Todo.list()
-
-// return <ul>{todos.map(todo => <li key={todo.id}>{todo.content}</li>)}</ul>
+// Type helper for generating the client (used internally by Amplify)
+export type Schema = ClientSchema<typeof schema>;
