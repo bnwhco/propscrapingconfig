@@ -22,7 +22,7 @@ export const useConfig = () => {
       // Auth mode is 'userPool' by default (set in data/resource.ts),
       // ensuring the user is authenticated.
       // The schema's auth rules (`allow.authenticated()`) grant read access.
-      const { data: fetchedConfigs, errors } = await client.models.DomainConfig.list();
+      const { data: fetchedConfigs, errors } = await client.models.DomainConfig.list({});
 
       if (errors) {
         console.error("Error fetching configs:", errors);

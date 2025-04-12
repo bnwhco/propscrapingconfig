@@ -1,65 +1,240 @@
+/* Basic Reset & Body Styles */
 body {
   margin: 0;
-  background: linear-gradient(180deg, rgb(117, 81, 194), rgb(255, 255, 255));
-  display: flex;
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  height: 100vh;
-  width: 100vw;
-  justify-content: center;
-  align-items: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f7f6;
+  color: #333;
+  font-size: 14px;
 }
 
-main {
+#root {
+  height: 100vh; /* Ensure root takes full viewport height */
+  display: flex; /* Use flexbox for Authenticator centering */
+  flex-direction: column;
+}
+
+/* Amplify Authenticator Styling (Example Overrides) */
+[data-amplify-authenticator] {
+  --amplify-components-authenticator-router-border-width: 0; /* Remove border */
+  --amplify-components-tabs-item-active-border-color: #007bff; /* Accent color */
+   margin: auto; /* Center authenticator */
+   height: auto; /* Override potential 100vh */
+}
+
+/* App Layout */
+.app-container {
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  height: 100vh; /* Full height of the side panel */
+  overflow: hidden; /* Prevent overall scroll */
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+.app-header {
+  background-color: #007bff;
   color: white;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-ul {
-  padding-inline-start: 0;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  list-style-type: none;
+  padding: 10px 15px;
   display: flex;
-  flex-direction: column;
-  margin: 8px 0;
-  border: 1px solid black;
-  gap: 1px;
-  background-color: black;
-  border-radius: 8px;
-  overflow: auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0; /* Prevent header from shrinking */
 }
 
-li {
-  background-color: white;
+.app-header h1 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.app-header p {
+    margin: 0 10px;
+    font-size: 0.9em;
+}
+
+.signout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+.signout-button:hover {
+    background-color: #c82333;
+}
+
+
+.main-content {
+  display: flex;
+  flex-grow: 1; /* Allow main content to fill remaining space */
+  overflow: hidden; /* Prevent scroll on main area, handle in panels */
+}
+
+.left-panel, .right-panel {
+  padding: 15px;
+  overflow-y: auto; /* Allow scrolling within panels */
+  height: 100%; /* Take full height of the flex container */
+  box-sizing: border-box;
+}
+
+.left-panel {
+  width: 40%; /* Adjust width as needed */
+  border-right: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.right-panel {
+  width: 60%; /* Adjust width as needed */
+  background-color: #e9ecef;
+}
+
+/* Component Styles */
+.url-input-form {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.url-input-form input[type="url"] {
+  flex-grow: 1;
   padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
 }
 
-li:hover {
-  background: #dadbf9;
+.url-input-form button {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+.url-input-form button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
 }
 
-a {
-  font-weight: 800;
-  text-decoration: none;
+
+.property-list-item {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #fdfdfd;
+    border-radius: 4px;
 }
+.property-list-item h3 {
+    margin-top: 0;
+    font-size: 1em;
+}
+.property-list-item p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+.property-list-item button {
+    margin-top: 8px;
+    padding: 5px 8px;
+    font-size: 0.85em;
+    cursor: pointer;
+}
+
+.detail-url-indicator {
+    font-style: italic;
+    color: #555;
+    font-size: 0.85em;
+    margin-top: 10px;
+    word-break: break-all;
+}
+
+.mapping-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  background-color: #fff;
+  font-size: 0.9em;
+}
+
+.mapping-table th, .mapping-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+  vertical-align: top; /* Align content top */
+}
+
+.mapping-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.mapping-table input[type="text"] {
+  width: calc(100% - 10px); /* Adjust width to fit padding */
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.list-row {
+    background-color: #ffffff;
+}
+.detail-row {
+    background-color: #f0f8ff; /* Light blue shade for detail rows */
+}
+.detail-row td:first-child {
+    font-weight: 500; /* Slightly bolder for detail field names */
+}
+
+.novalue {
+    color: #999;
+    font-style: italic;
+}
+
+.save-config-button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+}
+.save-config-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  padding: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #555;
+}
+
+.error-message {
+  color: #dc3545;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 1.1em;
+    color: #333;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+/* Utility */
+.text-muted {
+    color: #6c757d;
+}
+
+/* Responsive considerations if needed */
+/* @media (max-width: 768px) { ... } */

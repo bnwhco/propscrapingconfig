@@ -31,11 +31,11 @@ export const useAuthStatus = () => {
         case 'tokenRefresh_failure':
              console.warn("Auth token refresh failed, user might need to sign in again.");
              setIsAuthenticated(false);
-             break;
+             break;/*
          case 'autoSignIn_failure':
              console.warn("Auto sign-in failed.");
               setIsAuthenticated(false);
-             break;
+             break;*/
       }
     });
 

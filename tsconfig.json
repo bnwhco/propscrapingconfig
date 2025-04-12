@@ -7,19 +7,25 @@
     "skipLibCheck": true,
 
     /* Bundler mode */
-    "moduleResolution": "bundler",
+    "moduleResolution": "bundler", // Or "node" if bundler causes issues
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
+    "noEmit": true, // Vite handles emitting JS
     "jsx": "react-jsx",
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Aliases (Optional but recommended) */
+     "baseUrl": ".",
+     "paths": {
+       "@/*": ["src/*"]
+     }
   },
-  "include": ["src"],
+  "include": ["src", "vite.config.ts", "amplify/backend.ts"], // Include backend.ts for type checking
   "references": [{ "path": "./tsconfig.node.json" }]
 }

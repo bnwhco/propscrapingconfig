@@ -1,6 +1,7 @@
-import { defineData, type ClientSchema } from '@aws-amplify/backend-data';
+import { defineData} from '@aws-amplify/backend-data';
+// The schema builder 'a' comes from the data-schema package
 import { a } from '@aws-amplify/data-schema';
-
+import { type ClientSchema } from '@aws-amplify/backend';
 /*
 Define the DomainConfig model.
 NOTE: Authorization is set to allow any authenticated user to manage configs.
@@ -21,8 +22,7 @@ const schema = a.schema({
      * This acts as the primary identifier for the config.
      * Using `@primaryKey` makes querying by domain efficient.
      */
-    domain: a.string().required().identifier(), // Make domain the primary key
-
+    domain: a.string().required(),
     /**
      * The mapping from scraped field names to desired field names.
      * Stored as a flexible JSON object.
@@ -37,7 +37,8 @@ const schema = a.schema({
   // Consider using group-based authorization ('admin') for CUD operations in production.
   .authorization(allow => [allow.authenticated()])
 });
-
+// Type helper for generating the client (used internally by Amplify)
+export type Schema = ClientSchema<typeof schema>;
 // Export the schema definition for Amplify to process
 export const data = defineData({
   schema,
@@ -47,5 +48,3 @@ export const data = defineData({
   },
 });
 
-// Type helper for generating the client (used internally by Amplify)
-export type Schema = ClientSchema<typeof schema>;

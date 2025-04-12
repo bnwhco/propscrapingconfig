@@ -6,7 +6,7 @@ export const scrapingFunction = defineFunction({
   entry: './handler.ts',
   // Runtime and architecture
   runtime: 18, // Use Node.js 18.x or later (check compatibility with playwright-aws-lambda)
-  architecture: 'arm64', // ARM64 is generally more cost-effective
+  //architecture: 'arm64', // ARM64 is generally more cost-effective
   // Specify memory and timeout - Playwright needs significant resources
   memoryMB: 1024, // Minimum 1GB recommended for Playwright
   timeoutSeconds: 90, // Allow ample time for scraping (API Gateway default is 30s, max is 900s)

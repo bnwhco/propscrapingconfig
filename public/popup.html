@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Property Scraper</title>
+  <style>
+    body { width: 150px; padding: 10px; font-family: sans-serif; }
+    button { width: 100%; padding: 8px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <button id="openSidePanel">Open Scraper</button>
+  <script>
+    document.getElementById('openSidePanel').addEventListener('click', () => {
+      // Get current window to open side panel in
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs.length > 0) {
+          chrome.sidePanel.open({ windowId: tabs[0].windowId });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

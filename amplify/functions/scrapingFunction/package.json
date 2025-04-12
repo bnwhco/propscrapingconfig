@@ -5,9 +5,8 @@
   "main": "handler.ts",
   "type": "module",
   "dependencies": {
-    "playwright-aws-lambda": "^0.11.0", // Provides Chromium for Lambda
-    "cheerio": "^1.0.0-rc.12"          // HTML parsing
-    // playwright-core is usually a dependency of playwright-aws-lambda
+    "playwright-aws-lambda": "^0.11.0", 
+    "cheerio": "^1.0.0-rc.12"          
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.125",
